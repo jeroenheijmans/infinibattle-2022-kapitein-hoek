@@ -12,7 +12,7 @@ namespace KapiteinHoek
         public static void Start(Func<TurnState, PlacePiecesCommand> strategy, string fileLocation)
         {
             using var fileStream = new FileStream(fileLocation, FileMode.Create);
-            using var writer = new StreamWriter(fileStream) {AutoFlush = true};
+            using var writer = new StreamWriter(fileStream) { AutoFlush = true };
 
             try
             {
@@ -28,7 +28,6 @@ namespace KapiteinHoek
                 }
 
                 writer.WriteLine(line);
-
                 TurnState turnState;
 
                 while ((line = Console.In.ReadNextLine()) != "game-start")
@@ -44,8 +43,7 @@ namespace KapiteinHoek
                     catch (Exception e)
                     {
                         writer.WriteLine(e);
-                        throw new Exception(
-                            $"'game-state' was not initialized correctly, with error {e.Message}, got '{line}'");
+                        throw new Exception($"'game-state' was not initialized correctly, with error {e.Message}, got '{line}'");
                     }
 
                     writer.WriteLine(line);
@@ -63,33 +61,18 @@ namespace KapiteinHoek
                     }
 
                     var echos = new List<string>();
-
                     var sendOutputAfterTurnEnd = false;
 
                     while ((line = Console.In.ReadNextLine()) != "turn-start")
                     {
                         writer.WriteLine(line);
-
                         turnState = JsonConvert.DeserializeObject<TurnState>(line);
-
                         var placePiecesCommand = strategy(turnState);
-
                         echos.Add(JsonConvert.SerializeObject(placePiecesCommand));
 
-                        if (line.StartsWith("throw"))
-                        {
-                            throw new Exception("Throw requested");
-                        }
-
-                        if (line.StartsWith("win"))
-                        {
-                            Console.WriteLine("win");
-                        }
-
-                        if (line.StartsWith("sleep"))
-                        {
-                            Thread.Sleep(1000);
-                        }
+                        if (line.StartsWith("throw")) throw new Exception("De Kapitein luistert naar het universem en gooit exceptioneel goed... ehmm... *iets*!");
+                        if (line.StartsWith("win")) Console.WriteLine("win");
+                        if (line.StartsWith("sleep")) Thread.Sleep(1000);
 
                         if (line.StartsWith("stderr"))
                         {
@@ -112,8 +95,7 @@ namespace KapiteinHoek
 
                     if (sendOutputAfterTurnEnd)
                     {
-                        Console.WriteLine(
-                            "extra output sent after turn-end but before the next turn-start should be ignored");
+                        Console.WriteLine("Extra output sent after turn-end but before the next turn-start should be ignored");
                     }
                 }
 
@@ -123,10 +105,6 @@ namespace KapiteinHoek
             {
                 writer.WriteLine(e);
             }
-            finally
-            {
-                writer.Close();
-            }
         }
     }
 
@@ -134,12 +112,11 @@ namespace KapiteinHoek
     {
         internal static string ReadNextLine(this TextReader reader)
         {
-            string line = null;
+            string line;
             while ((line = reader.ReadLine()) == null)
             {
                 Thread.Sleep(10);
             }
-
             return line;
         }
     }
