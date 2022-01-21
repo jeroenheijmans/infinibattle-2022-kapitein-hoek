@@ -1,4 +1,4 @@
-namespace StarterBot.Models
+namespace KapiteinHoek.Models
 {
     public enum PieceType
     {

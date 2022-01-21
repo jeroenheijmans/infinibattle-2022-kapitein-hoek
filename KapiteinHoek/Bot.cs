@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
-using StarterBot.Models;
+using KapiteinHoek.Models;
 
-namespace StarterBot
+namespace KapiteinHoek
 {
     public class Bot
     {

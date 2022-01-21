@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StarterBot.Models
+namespace KapiteinHoek.Models
 {
     public static class PossibleLPieceCoordinates
     {

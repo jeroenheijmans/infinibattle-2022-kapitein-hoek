@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StarterBot.Models
+namespace KapiteinHoek.Models
 {
     public class LGameBoard
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
-using StarterBot.Models;
+using KapiteinHoek.Models;
 
-namespace StarterBot
+namespace KapiteinHoek
 {
     class Program
     {

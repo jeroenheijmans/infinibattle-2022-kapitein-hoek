@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterBot", "StarterBot\StarterBot.csproj", "{B736498B-EAB8-47E7-9ADB-D0A4E37DBFE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KapiteinHoek", "KapiteinHoek\KapiteinHoek.csproj", "{B736498B-EAB8-47E7-9ADB-D0A4E37DBFE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
