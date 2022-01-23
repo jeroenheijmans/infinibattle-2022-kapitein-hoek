@@ -9,11 +9,8 @@ namespace KapiteinHoek.Models
         {
             Coordinates = new List<int[]>{ coordinate1, coordinate2, coordinate3, coordinate4};
             
-            TouchesCornerField =
-                Coordinates.Any(p => p[0] == 0 && p[1] == 0) ||
-                Coordinates.Any(p => p[0] == 3 && p[1] == 0) ||
-                Coordinates.Any(p => p[0] == 0 && p[1] == 3) ||
-                Coordinates.Any(p => p[0] == 3 && p[1] == 3);
+            TouchesCornerField = 
+                Coordinates.Any(p => p.IsCorner());
 
             HasLongSideAgainstOutside =
                 Coordinates.Count(p => p[0] == 0) == 3 ||

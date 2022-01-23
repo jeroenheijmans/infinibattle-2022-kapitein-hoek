@@ -75,4 +75,16 @@ namespace KapiteinHoek.Models
             Board[coordinate[1]][coordinate[0]] = PieceType.NeutralPiece;
         }
     }
+
+    public static class CoordinateExtensions
+    {
+        public static bool IsCorner(this IList<int> coords)
+        {
+            return
+                (coords[0] == 0 && coords[1] == 0) ||
+                (coords[0] == 3 && coords[1] == 0) ||
+                (coords[0] == 0 && coords[1] == 3) ||
+                (coords[0] == 3 && coords[1] == 3);
+        }
+    }
 }

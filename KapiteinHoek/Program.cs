@@ -33,16 +33,16 @@ namespace KapiteinHoek
                 .First();
             board.PlaceLPieceMoveForPlayer(lPieceMove, turnstate.Player);
 
-            // Possibly move the neutral piece too
-            var random = new Random();
+            // Move neutral piece to a corner if we can to prevent others from going there
             var neutralPieceCoordinates = turnstate.GameState.Board.RetrievePieceTypeCoordinates(PieceType.NeutralPiece);
-            if (random.Next(100) < 75)
+            var neutralPieceNotInCorner = neutralPieceCoordinates.FirstOrDefault(p => !p.IsCorner());
+            if (neutralPieceNotInCorner != null)
             {
-                var removedNeutralPieceIndex = random.Next() % 2;
+                var removedNeutralPieceIndex = neutralPieceCoordinates.IndexOf(neutralPieceNotInCorner);
                 board.ClearSpace(neutralPieceCoordinates[removedNeutralPieceIndex]);
 
                 var emptySpaceCoordinates = board.RetrievePieceTypeCoordinates(PieceType.Empty);
-                var newNeutralPieceLocation = emptySpaceCoordinates[random.Next(emptySpaceCoordinates.Count)];
+                var newNeutralPieceLocation = emptySpaceCoordinates.OrderByDescending(c => c.IsCorner()).First();
                 neutralPieceCoordinates[removedNeutralPieceIndex] = newNeutralPieceLocation;
 
                 board.PlaceNeutralPiece(newNeutralPieceLocation);
