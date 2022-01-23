@@ -26,12 +26,15 @@ namespace KapiteinHoek
             var board = turnstate.GameState.Board;
             board.RemoveCurrentPlayerLPieceFromBoard(turnstate.Player);
 
-            // Select and make a random move
-            var random = new Random();
-            var lPieceMove = possibleMoves[random.Next(possibleMoves.Count)];
+            // Select the first move we find, preferring those (A) in a corner and secondary (B) without the 3-way side to the walls
+            var lPieceMove = possibleMoves
+                .OrderByDescending(m => m.TouchesCornerField)
+                .ThenBy(m => m.HasLongSideAgainstOutside)
+                .First();
             board.PlaceLPieceMoveForPlayer(lPieceMove, turnstate.Player);
 
             // Possibly move the neutral piece too
+            var random = new Random();
             var neutralPieceCoordinates = turnstate.GameState.Board.RetrievePieceTypeCoordinates(PieceType.NeutralPiece);
             if (random.Next(100) < 75)
             {
