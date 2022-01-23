@@ -10,7 +10,8 @@ namespace KapiteinHoek
     {
         static void Main(string[] args)
         {
-            Bot.Start(Strategy, $"bot-{DateTime.UtcNow.ToString("dd_MM_yy_HH_mm_ss_ffff", CultureInfo.InvariantCulture)}.log");
+            var logger = new Logger($"bot-{DateTime.UtcNow.ToString("dd_MM_yy_HH_mm_ss_ffff", CultureInfo.InvariantCulture)}.log");
+            Bot.Start(Strategy, logger);
         }
 
         private static PlacePiecesCommand Strategy(TurnState turnstate)
@@ -19,7 +20,7 @@ namespace KapiteinHoek
 
             if (possibleMoves.Count == 0)
             {
-                throw new Exception("Kapitein Hoek heeft een krokodil ontmoet. Eentje die beter is in L-Game dan de Kapitein zelf!");
+                throw new Exception("Kapitein Hoek heeft een krokodil ontmoet. Eentje die beter is in L-Game dan de Kapitein zelf! We kunnen geen zetten meer doen, dus verloren!");
             }
 
             var board = turnstate.GameState.Board;

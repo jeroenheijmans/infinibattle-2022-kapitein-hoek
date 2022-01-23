@@ -9,22 +9,19 @@ namespace KapiteinHoek
 {
     public class Bot
     {
-        public static void Start(Func<TurnState, PlacePiecesCommand> strategy, string fileLocation)
+        public static void Start(Func<TurnState, PlacePiecesCommand> strategy, Logger writer)
         {
-            using var fileStream = new FileStream(fileLocation, FileMode.Create);
-            using var writer = new StreamWriter(fileStream) { AutoFlush = true };
-
             try
             {
                 // Output before bot-start signal is ignored.
                 // Sending bot-start signals that the bot is ready to receive data.
-                Console.WriteLine("bot-start");
+                writer.WriteLineWithConsole("bot-start");
 
                 string line;
 
                 if ((line = Console.In.ReadNextLine()) != "game-init")
                 {
-                    throw new Exception($"Expected 'game-init', got '{line}'");
+                    writer.FlushAndThrow($"Expected 'game-init', got '{line}'");
                 }
 
                 writer.WriteLine(line);
@@ -37,13 +34,13 @@ namespace KapiteinHoek
                         turnState = JsonConvert.DeserializeObject<TurnState>(line);
                         if (turnState == null)
                         {
-                            throw new Exception("Deserialization resulted in null object");
+                            writer.FlushAndThrow("Deserialization resulted in null object");
                         }
                     }
                     catch (Exception e)
                     {
                         writer.WriteLine(e);
-                        throw new Exception($"'game-state' was not initialized correctly, with error {e.Message}, got '{line}'");
+                        writer.FlushAndThrow($"'game-state' was not initialized correctly, with error {e.Message}, got '{line}'");
                     }
 
                     writer.WriteLine(line);
@@ -57,7 +54,7 @@ namespace KapiteinHoek
 
                     if (line != "turn-init")
                     {
-                        throw new Exception($"Expected 'turn-init', got '{line}'");
+                        writer.FlushAndThrow($"Expected 'turn-init', got '{line}'");
                     }
 
                     var echos = new List<string>();
@@ -70,8 +67,8 @@ namespace KapiteinHoek
                         var placePiecesCommand = strategy(turnState);
                         echos.Add(JsonConvert.SerializeObject(placePiecesCommand));
 
-                        if (line.StartsWith("throw")) throw new Exception("De Kapitein luistert naar het universem en gooit exceptioneel goed... ehmm... *iets*!");
-                        if (line.StartsWith("win")) Console.WriteLine("win");
+                        if (line.StartsWith("throw")) writer.FlushAndThrow("De Kapitein luistert naar het universem en gooit exceptioneel goed... ehmm... *iets*!");
+                        if (line.StartsWith("win")) writer.WriteLineWithConsole("win");
                         if (line.StartsWith("sleep")) Thread.Sleep(1000);
 
                         if (line.StartsWith("stderr"))
@@ -88,22 +85,22 @@ namespace KapiteinHoek
 
                     foreach (var echo in echos)
                     {
-                        Console.WriteLine(echo);
+                        writer.WriteLineWithConsole(echo);
                     }
 
-                    Console.WriteLine("turn-end");
+                    writer.WriteLineWithConsole("turn-end");
 
                     if (sendOutputAfterTurnEnd)
                     {
-                        Console.WriteLine("Extra output sent after turn-end but before the next turn-start should be ignored");
+                        writer.WriteLineWithConsole("Extra output sent after turn-end but before the next turn-start should be ignored");
                     }
                 }
 
                 writer.WriteLine(line);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                writer.WriteLine(e);
+                writer.FlushAndThrow(e); // Starter bot tries to continue at this point. But let's try throwing?
             }
         }
     }
