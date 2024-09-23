@@ -2,6 +2,10 @@
 
 Simplistic strategy for the ["L-Game"](https://en.wikipedia.org/wiki/L_game) (with scoring points for corner positions) Infinibattle edition.
 
+## ⚠️ Notice about updates
+
+Note that this repository is provided "as-is" and will most likely not receive any (security) updates.
+
 ## Description
 
 After two editions of the Infinibattle (in-house bot-programming challenge at Infi) where I wrote a bot that was designed to fail, this year there's actually an attempt at winning!
